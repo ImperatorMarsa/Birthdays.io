@@ -27,7 +27,7 @@ git clone https://github.com/ImperatorMarsa/Birthdays.io.git
 Transfer the contents of folder `Birthdays.io` to folder `Birthday`
 
 ### Step 4
-Create a table named `relationship`, `name`, `birthday` in the `yii2basic` database, and insert some sample data. You may run the following SQL statements to do so:
+Create a table named `relationship`, `name` and `birthday` in the `yii2basic` database, and insert some sample data. You may run the following SQL statements to do so:
 ```sql
 CREATE TABLE `relationship` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -85,5 +85,5 @@ Now you should be able to access the application through the following URL, assu
 directly under the Web root.
 
 ~~~
-http://localhost/birthday/web/
+http://localhost
 ~~~
