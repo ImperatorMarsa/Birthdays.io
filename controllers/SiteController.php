@@ -12,24 +12,25 @@ use app\models\Relationship;
 
 class SiteController extends Controller{
     public function actionIndex($message = 'up', $button = 'id'){
-        $order = 'ASC';
+        $order = SORT_ASC;
         if ($message == 'down') {
-            $order = 'DESC';
+            $order = SORT_DESC;
         }        
 
-        $birthdays = Yii::$app->db->createCommand('SELECT relationship.id, name.name, birthday 
-                FROM relationship 
-                JOIN name, birthday 
-            WHERE name.id=relationship.n_id 
-            AND birthday.id=relationship.b_id
-            ORDER BY '.$button.' '.$order)
-        ->queryAll();    
-
         $model = new BirthdayForm();
-
+            
+        $birthdays = (new \yii\db\Query())
+            ->select(['relationship.id', 'name.name', 'birthday'])
+            ->from(['relationship'])
+            ->leftJoin('name', 'name.id=relationship.n_id')
+            ->leftJoin('birthday', 'birthday.id=relationship.b_id')
+            ->orderBy([$button => $order])
+            ->all();
+                        
         return $this->render('index', [
             'birthdays' => $birthdays,
             'model' => $model,
+            'alert' => $alert,
         ]);
     }
 
@@ -45,10 +46,6 @@ class SiteController extends Controller{
                 Relationship::findOne($relation->id)->delete();
                 Birthday::findOne($birthday->id)->delete();
                 Name::findOne($name->id)->delete();
-
-                $relation->save();
-                $birthday->save();
-                $name->save();
             }
         }
         return $this->render('editor-confirm');
